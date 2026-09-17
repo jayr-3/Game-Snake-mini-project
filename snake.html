@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Snake Game</title>
+    <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Baloo+2:wght@500;700;800&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --neon: #d9ff00;
+            --neon-glow: rgba(217, 255, 0, 0.55);
+            --panel: #0e1420;
+        }
+
+        * { box-sizing: border-box; }
+
+        body {
+            margin: 0;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            gap: 18px;
+            padding: 30px 16px;
+            font-family: 'Baloo 2', sans-serif;
+            background: radial-gradient(circle at 50% 0%, #223a6b 0%, #12203f 45%, #060a14 100%);
+            background-size: 200% 200%;
+            animation: gradientBackground 12s ease infinite;
+            overflow: hidden;
+        }
+
+        @keyframes gradientBackground {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        /* Floating ambient blobs for a bit of arcade sparkle */
+        body::before, body::after {
+            content: "";
+            position: fixed;
+            width: 340px;
+            height: 340px;
+            border-radius: 50%;
+            filter: blur(90px);
+            opacity: 0.35;
+            z-index: 0;
+            pointer-events: none;
+        }
+        body::before {
+            background: #d9ff00;
+            top: -120px;
+            left: -120px;
+            animation: float1 9s ease-in-out infinite;
+        }
+        body::after {
+            background: #ff3d81;
+            bottom: -140px;
+            right: -100px;
+            animation: float2 11s ease-in-out infinite;
+        }
+        @keyframes float1 {
+            0%, 100% { transform: translate(0, 0); }
+            50% { transform: translate(60px, 40px); }
+        }
+        @keyframes float2 {
+            0%, 100% { transform: translate(0, 0); }
+            50% { transform: translate(-50px, -30px); }
+        }
+
+        h1 {
+            position: relative;
+            z-index: 1;
+            margin: 0;
+            color: #fff;
+            font-size: clamp(2.2rem, 6vw, 4rem);
+            text-align: center;
+            text-shadow: 0 0 12px var(--neon-glow), 3px 3px 10px rgba(0, 0, 0, 0.9);
+            font-family: 'Bebas Neue', sans-serif;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+        }
+
+        .hud {
+            position: relative;
+            z-index: 1;
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            padding: 10px 22px;
+            background: rgba(14, 20, 32, 0.75);
+            border: 2px solid var(--neon);
+            border-radius: 999px;
+            box-shadow: 0 0 18px var(--neon-glow);
+            color: #fff;
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 1.4rem;
+            letter-spacing: 1px;
+        }
+
+        .hud span { color: var(--neon); }
+
+        .board-wrap {
+            position: relative;
+            z-index: 1;
+            border-radius: 20px;
+            padding: 14px;
+            background: linear-gradient(145deg, #182238, #0b1120);
+            box-shadow:
+                0 0 0 2px rgba(217, 255, 0, 0.15),
+                0 20px 45px rgba(0, 0, 0, 0.55),
+                inset 0 0 20px rgba(0, 0, 0, 0.6);
+        }
+
+        canvas {
+            display: block;
+            width: min(600px, 88vw);
+            height: min(600px, 88vw);
+            aspect-ratio: 1 / 1;
+            border-radius: 12px;
+            border: 4px solid var(--neon);
+            background-color: #0c0f14;
+            box-shadow: 0 0 25px 4px var(--neon-glow);
+            transition: transform 0.25s ease, box-shadow 0.25s ease;
+        }
+
+        .board-wrap:hover canvas {
+            transform: scale(1.015);
+            box-shadow: 0 0 35px 8px var(--neon-glow);
+        }
+
+        .hint {
+            position: relative;
+            z-index: 1;
+            color: rgba(255, 255, 255, 0.65);
+            font-size: 0.95rem;
+            letter-spacing: 0.5px;
+            text-align: center;
+        }
+    </style>
+</head>
+
+<body>
+    <h1>The Snake Project By Supakorn033</h1>
+    <div class="hud">🐍 SCORE <span id="scoreLabel">0</span></div>
+    <div class="board-wrap">
+        <canvas id="gameCanvas" width="600" height="600"></canvas>
+    </div>
+    <p class="hint">ใช้ปุ่มลูกศรเพื่อบังคับทิศทาง • กด Enter เพื่อเริ่มใหม่หลังแพ้</p>
+    <script src="snake.js"></script>
+</body>
+</html>
